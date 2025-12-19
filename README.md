@@ -123,8 +123,16 @@ pip install thefuck-leeguoo
 Or with [uv](https://github.com/astral-sh/uv):
 
 ```bash
-uv pip install thefuck-leeguoo
+uv tool install thefuck-leeguoo
 ```
+
+**That's it!** Just run `fuck` after a failed command - it works immediately without any configuration!
+
+The first time you run `fuck`, it will:
+1. Read your last command from shell history
+2. Re-run it to get the error output
+3. Suggest a fix and ask for confirmation
+4. Auto-configure your shell for faster experience next time
 
 ### Other Installation Methods
 

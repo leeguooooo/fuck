@@ -6,14 +6,19 @@ init_output()
 import getpass  # noqa: E402
 import os  # noqa: E402
 import json  # noqa: E402
+import sys  # noqa: E402
+import subprocess  # noqa: E402
 from tempfile import gettempdir  # noqa: E402
 import time  # noqa: E402
 import six  # noqa: E402
 from psutil import Process  # noqa: E402
-from .. import logs, const  # noqa: E402
+from .. import logs, const, types  # noqa: E402
 from ..shells import shell  # noqa: E402
 from ..conf import settings  # noqa: E402
 from ..system import Path  # noqa: E402
+from ..corrector import get_corrected_commands  # noqa: E402
+from ..ui import select_command  # noqa: E402
+from ..exceptions import EmptyCommand  # noqa: E402
 
 
 def _get_shell_pid():
@@ -88,27 +93,109 @@ def _configure(configuration_details):
         shell_config.write(u'\n')
 
 
+def _get_last_command_from_history():
+    """Gets the last command from shell history, excluding 'fuck' itself."""
+    history = shell.get_history()
+    if not history:
+        return None
+    
+    # Find the last command that isn't 'fuck'
+    for cmd in reversed(history):
+        cmd_stripped = cmd.strip()
+        if cmd_stripped and cmd_stripped != 'fuck' and not cmd_stripped.startswith('fuck '):
+            return cmd_stripped
+    return None
+
+
+def _run_and_fix_command(command_script):
+    """Runs the command and tries to fix it."""
+    try:
+        command = types.Command.from_raw_script([command_script])
+    except EmptyCommand:
+        logs.debug('Empty command, nothing to do')
+        return False
+
+    corrected_commands = get_corrected_commands(command)
+    selected_command = select_command(corrected_commands)
+
+    if selected_command:
+        # Print the fixed command
+        fixed_script = selected_command.script
+        logs.show_corrected_command(fixed_script)
+        
+        # Ask for confirmation or run directly based on settings
+        if not settings.require_confirmation:
+            # Run the fixed command
+            subprocess.call(fixed_script, shell=True)
+        else:
+            # Show the command and ask user to confirm
+            try:
+                if six.PY2:
+                    response = raw_input('Run this command? [Y/n] ')  # noqa: F821
+                else:
+                    response = input('Run this command? [Y/n] ')
+                if response.lower() in ('', 'y', 'yes'):
+                    subprocess.call(fixed_script, shell=True)
+            except (KeyboardInterrupt, EOFError):
+                print('')
+        return True
+    return False
+
+
+def _auto_configure_shell():
+    """Automatically configures the shell if possible."""
+    configuration_details = shell.how_to_configure()
+    if (configuration_details and 
+        configuration_details.can_configure_automatically and
+        not _is_already_configured(configuration_details)):
+        _configure(configuration_details)
+        return True
+    return False
+
+
 def main():
-    """Shows useful information about how-to configure alias on a first run
-    and configure automatically on a second.
-
-    It'll be only visible when user type fuck and when alias isn't configured.
-
+    """Main entry point for 'fuck' command.
+    
+    This now works in two modes:
+    1. If shell alias is configured: works through the alias (fast mode)
+    2. If not configured: reads history, reruns command, and fixes it
+    
+    Also auto-configures the shell for better experience next time.
     """
     settings.init()
-    configuration_details = shell.how_to_configure()
-    if (
-        configuration_details and
-        configuration_details.can_configure_automatically
-    ):
-        if _is_already_configured(configuration_details):
-            logs.already_configured(configuration_details)
-            return
-        elif _is_second_run():
-            _configure(configuration_details)
-            logs.configured_successfully(configuration_details)
-            return
-        else:
-            _record_first_run()
-
-    logs.how_to_configure_alias(configuration_details)
+    
+    # Check if we're being called through the alias (TF_COMMAND is set)
+    if os.environ.get('TF_COMMAND'):
+        # We're being called through alias, delegate to fix_command
+        from .fix_command import fix_command
+        from ..argument_parser import Parser
+        parser = Parser()
+        known_args = parser.parse(sys.argv)
+        fix_command(known_args)
+        return
+    
+    # Not called through alias - work directly with history
+    last_command = _get_last_command_from_history()
+    
+    if not last_command:
+        logs.how_to_configure_alias(shell.how_to_configure())
+        return
+    
+    # Try to fix the command
+    print(u'Last command: {}'.format(last_command))
+    print(u'Re-running to get output...')
+    
+    if _run_and_fix_command(last_command):
+        # Auto-configure shell for next time
+        if _auto_configure_shell():
+            print(u'\nShell configured! Restart your terminal for faster experience.')
+    else:
+        print(u'No fix found for this command.')
+        
+        # Show configuration help
+        configuration_details = shell.how_to_configure()
+        if configuration_details:
+            if _auto_configure_shell():
+                print(u'\nShell auto-configured! Restart your terminal.')
+            else:
+                logs.how_to_configure_alias(configuration_details)
