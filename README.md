@@ -114,6 +114,20 @@ Reading package lists... Done
 
 ## Installation
 
+### Install via PyPI (Recommended)
+
+```bash
+pip install thefuck-leeguoo
+```
+
+Or with [uv](https://github.com/astral-sh/uv):
+
+```bash
+uv pip install thefuck-leeguoo
+```
+
+### Other Installation Methods
+
 On macOS or Linux, you can install *The Fuck* via [Homebrew][homebrew]:
 
 ```bash
@@ -211,7 +225,7 @@ fuck -r
 ## Updating
 
 ```bash
-pip3 install thefuck --upgrade
+pip install thefuck-leeguoo --upgrade
 ```
 
 **Note: Alias functionality was changed in v1.34 of *The Fuck***

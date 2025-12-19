@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel", "fastentrypoints"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "thefuck"
+name = "thefuck-leeguoo"
 version = "3.32"
 description = "Magnificent app which corrects your previous console command"
 readme = "README.md"

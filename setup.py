@@ -51,7 +51,7 @@ else:
                   'thefuck = thefuck.entrypoints.main:main',
                   'fuck = thefuck.entrypoints.not_configured:main']}
 
-setup(name='thefuck',
+setup(name='thefuck-leeguoo',
       version=VERSION,
       description="Magnificent app which corrects your previous console command",
       long_description=long_description,
