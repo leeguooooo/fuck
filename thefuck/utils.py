@@ -295,14 +295,52 @@ cache.disabled = False
 
 
 def get_installation_version():
+    def _from_importlib():
+        try:
+            from importlib.metadata import (  # py3.8+
+                version, PackageNotFoundError, packages_distributions)
+        except Exception:
+            return
+
+        for name in ('thefuck',):
+            try:
+                return version(name)
+            except PackageNotFoundError:
+                pass
+
+        try:
+            dist_names = packages_distributions().get('thefuck', [])
+        except Exception:
+            dist_names = []
+        for name in dist_names:
+            try:
+                return version(name)
+            except PackageNotFoundError:
+                pass
+
+        for name in ('thefuck-leeguoo',):
+            try:
+                return version(name)
+            except PackageNotFoundError:
+                pass
+        return
+
+    result = _from_importlib()
+    if result:
+        return result
+
     try:
-        from importlib.metadata import version
-
-        return version('thefuck')
-    except ImportError:
         import pkg_resources
+    except Exception:
+        return 'unknown'
 
+    try:
         return pkg_resources.require('thefuck')[0].version
+    except Exception:
+        try:
+            return pkg_resources.require('thefuck-leeguoo')[0].version
+        except Exception:
+            return 'unknown'
 
 
 def get_alias():
