@@ -167,15 +167,15 @@ def ai_choose_header():
 
 def confirm_choice(corrected_command):
     global _last_confirm_lines
-    index = getattr(corrected_command, '_tf_index', None)
-    if not index:
+    script = getattr(corrected_command, 'script', '') or ''
+    if not script:
         return confirm_text(corrected_command)
-    prompt = (u'{prefix}{bold}{index}{reset} '
+    prompt = (u'{prefix}{cmd_color}{script}{reset} '
               u'[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
               u'/{blue}tab{reset}/{red}ctrl+c{reset}]').format(
                   prefix=const.USER_COMMAND_MARK,
-                  index=index,
-                  bold=color(colorama.Style.BRIGHT),
+                  script=script,
+                  cmd_color=color(colorama.Style.BRIGHT + colorama.Fore.CYAN),
                   green=color(colorama.Fore.GREEN),
                   red=color(colorama.Fore.RED),
                   reset=color(colorama.Style.RESET_ALL),
