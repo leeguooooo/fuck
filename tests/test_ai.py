@@ -1,7 +1,7 @@
 import json
 
-from thefuck import ai
-from thefuck.types import Command
+from fuck import ai
+from fuck.types import Command
 
 
 def _response_with_content(content):

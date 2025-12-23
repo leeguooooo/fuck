@@ -1,7 +1,7 @@
 import pytest
 
-from thefuck.rules.git_branch_0flag import get_new_command, match
-from thefuck.types import Command
+from fuck.rules.git_branch_0flag import get_new_command, match
+from fuck.types import Command
 
 
 @pytest.fixture

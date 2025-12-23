@@ -4,8 +4,8 @@ from tests.functional.plots import with_confirmation, without_confirmation, \
     select_command_with_arrows, how_to_configure
 
 
-python_3 = (u'thefuck/python3', u'', u'sh')
-python_2 = (u'thefuck/python2', u'', u'sh')
+python_3 = (u'fuck/python3', u'', u'sh')
+python_2 = (u'fuck/python2', u'', u'sh')
 
 
 init_zshrc = u'''echo '
@@ -14,9 +14,9 @@ export HISTFILE=~/.zsh_history
 echo > $HISTFILE
 export SAVEHIST=100
 export HISTSIZE=100
-eval $(thefuck --alias {})
+eval $(fuck --alias {})
 setopt INC_APPEND_HISTORY
-echo "instant mode ready: $THEFUCK_INSTANT_MODE"
+echo "instant mode ready: $FUCK_INSTANT_MODE"
 ' > ~/.zshrc'''
 
 

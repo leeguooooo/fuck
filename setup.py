@@ -23,11 +23,11 @@ else:
 
 version = sys.version_info[:2]
 if version < (2, 7):
-    print('thefuck requires Python version 2.7 or later' +
+    print('fuck requires Python version 2.7 or later' +
           ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
 elif (3, 0) < version < (3, 5):
-    print('thefuck requires Python version 3.5 or later' +
+    print('fuck requires Python version 3.5 or later' +
           ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
 
@@ -42,29 +42,25 @@ extras_require = {':python_version<"3.4"': ['pathlib2'],
 
 if sys.platform == "win32":
     scripts = ['scripts\\fuck.bat', 'scripts\\fuck.ps1']
-    entry_points = {'console_scripts': [
-                  'thefuck = thefuck.entrypoints.main:main',
-                  'thefuck_firstuse = thefuck.entrypoints.not_configured:main']}
 else:
     scripts = []
-    entry_points = {'console_scripts': [
-                  'thefuck = thefuck.entrypoints.main:main',
-                  'fuck = thefuck.entrypoints.not_configured:main']}
+entry_points = {'console_scripts': [
+              'fuck = fuck.entrypoints.main:main']}
 
-setup(name='thefuck-leeguoo',
+setup(name='fuck',
       version=VERSION,
       description="AI-first command fixer for shell/terminal CLI with streamed explanations and Markdown rendering",
       long_description=long_description,
       author='leeguoo',
       author_email='leeguoo@users.noreply.github.com',
-      url='https://github.com/leeguooooo/thefuck',
+      url='https://github.com/leeguooooo/fuck',
       license='MIT',
       keywords='ai, cli, command line, shell, terminal, autocorrect, bash, zsh, fish, productivity',
       project_urls={
-          'Homepage': 'https://github.com/leeguooooo/thefuck',
-          'Repository': 'https://github.com/leeguooooo/thefuck',
-          'Issues': 'https://github.com/leeguooooo/thefuck/issues',
-          'Documentation': 'https://github.com/leeguooooo/thefuck#readme',
+          'Homepage': 'https://github.com/leeguooooo/fuck',
+          'Repository': 'https://github.com/leeguooooo/fuck',
+          'Issues': 'https://github.com/leeguooooo/fuck/issues',
+          'Documentation': 'https://github.com/leeguooooo/fuck#readme',
       },
       packages=find_packages(exclude=['ez_setup', 'examples',
                                       'tests', 'tests.*', 'release']),

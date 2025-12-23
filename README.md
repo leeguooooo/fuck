@@ -1,4 +1,4 @@
-# thefuck-leeguoo
+# fuck
 
 AI-first command fixer for your shell/terminal CLI (bash, zsh, fish) with streamed explanations and Markdown rendering.
 
@@ -9,17 +9,17 @@ AI-first command fixer for your shell/terminal CLI (bash, zsh, fish) with stream
 Install:
 
 ```bash
-uv tool install thefuck-leeguoo
+uv tool install fuck
 # or
-pip install thefuck-leeguoo
+pip install fuck
 ```
 
 Setup (recommended):
 
 ```bash
-thefuck setup
+fuck setup
 # or
-uvx thefuck --setup
+uvx fuck --setup
 ```
 
 Usage:
@@ -29,8 +29,8 @@ Usage:
 fuck
 ```
 
-AI config: run `thefuck setup` or set env vars like `THEFUCK_AI_URL`,
-`THEFUCK_AI_TOKEN`, `THEFUCK_AI_MODEL`, `THEFUCK_AI_STREAM`, `THEFUCK_AI_MODE`.
+AI config: run `fuck setup` or set env vars like `FUCK_AI_URL`,
+`FUCK_AI_TOKEN`, `FUCK_AI_MODEL`, `FUCK_AI_STREAM`, `FUCK_AI_MODE`.
 
 Disclaimer: always review the suggested command before executing it.
 
@@ -39,17 +39,17 @@ Disclaimer: always review the suggested command before executing it.
 安装：
 
 ```bash
-uv tool install thefuck-leeguoo
+uv tool install fuck
 # 或
-pip install thefuck-leeguoo
+pip install fuck
 ```
 
 初始化（推荐）：
 
 ```bash
-thefuck setup
+fuck setup
 # 或
-uvx thefuck --setup
+uvx fuck --setup
 ```
 
 使用：
@@ -59,8 +59,8 @@ uvx thefuck --setup
 fuck
 ```
 
-AI 配置：运行 `thefuck setup`，或设置环境变量如 `THEFUCK_AI_URL`、
-`THEFUCK_AI_TOKEN`、`THEFUCK_AI_MODEL`、`THEFUCK_AI_STREAM`、`THEFUCK_AI_MODE`。
+AI 配置：运行 `fuck setup`，或设置环境变量如 `FUCK_AI_URL`、
+`FUCK_AI_TOKEN`、`FUCK_AI_MODEL`、`FUCK_AI_STREAM`、`FUCK_AI_MODE`。
 
 免责声明：请在执行前确认修复命令的安全性与正确性。
 
@@ -69,17 +69,17 @@ AI 配置：运行 `thefuck setup`，或设置环境变量如 `THEFUCK_AI_URL`�
 インストール：
 
 ```bash
-uv tool install thefuck-leeguoo
+uv tool install fuck
 # または
-pip install thefuck-leeguoo
+pip install fuck
 ```
 
 セットアップ（推奨）：
 
 ```bash
-thefuck setup
+fuck setup
 # または
-uvx thefuck --setup
+uvx fuck --setup
 ```
 
 使い方：
@@ -89,7 +89,7 @@ uvx thefuck --setup
 fuck
 ```
 
-AI 設定：`thefuck setup` を使うか、`THEFUCK_AI_URL`、`THEFUCK_AI_TOKEN`、
-`THEFUCK_AI_MODEL`、`THEFUCK_AI_STREAM`、`THEFUCK_AI_MODE` などの環境変数を設定します。
+AI 設定：`fuck setup` を使うか、`FUCK_AI_URL`、`FUCK_AI_TOKEN`、
+`FUCK_AI_MODEL`、`FUCK_AI_STREAM`、`FUCK_AI_MODE` などの環境変数を設定します。
 
 免責事項：実行前に提案コマンドを必ず確認してください。

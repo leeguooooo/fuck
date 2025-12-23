@@ -4,19 +4,24 @@ if ((Get-Command "fuck").CommandType -eq "Function") {
 	exit
 }
 
-"First time use of thefuck detected. "
+"First time use of fuck detected. "
+$app = Get-Command fuck -CommandType Application -ErrorAction SilentlyContinue
+if (-not $app) {
+	"fuck executable not found in PATH."
+	exit 1
+}
 
-if ((Get-Content $PROFILE -Raw -ErrorAction Ignore) -like "*thefuck*") {
+if ((Get-Content $PROFILE -Raw -ErrorAction Ignore) -like "*fuck --alias*") {
 } else {
-	"  - Adding thefuck intialization to user `$PROFILE"
-	$script = "`n`$env:PYTHONIOENCODING='utf-8' `niex `"`$(thefuck --alias)`"";
+	"  - Adding fuck initialization to user `$PROFILE"
+	$script = "`n`$env:PYTHONIOENCODING='utf-8' `niex `"`$(& `"$($app.Source)`" --alias)`"";
 	Write-Output $script | Add-Content $PROFILE
 }
 
 "  - Adding fuck() function to current session..."
 $env:PYTHONIOENCODING='utf-8'
-iex "$($(thefuck --alias).Replace("function fuck", "function global:fuck"))"
+iex "$((& `"$($app.Source)`" --alias).Replace("function fuck", "function global:fuck"))"
 
 "  - Invoking fuck()`n"
-fuck @args;
+& $app.Source @args;
 [Console]::ResetColor()

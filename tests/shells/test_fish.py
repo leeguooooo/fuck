@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from thefuck.const import ARGUMENT_PLACEHOLDER
-from thefuck.shells import Fish
+from fuck.const import ARGUMENT_PLACEHOLDER
+from fuck.shells import Fish
 
 
 @pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
@@ -13,7 +13,7 @@ class TestFish(object):
 
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.fish.Popen')
+        mock = mocker.patch('fuck.shells.fish.Popen')
         mock.return_value.stdout.read.side_effect = [(
             b'cd\nfish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nls\n'
             b'man\nmath\npopd\npushd\nruby'),
@@ -22,11 +22,10 @@ class TestFish(object):
         return mock
 
     @pytest.mark.parametrize('key, value', [
-        ('TF_OVERRIDDEN_ALIASES', 'cut,git,sed'),  # legacy
-        ('THEFUCK_OVERRIDDEN_ALIASES', 'cut,git,sed'),
-        ('THEFUCK_OVERRIDDEN_ALIASES', 'cut, git, sed'),
-        ('THEFUCK_OVERRIDDEN_ALIASES', ' cut,\tgit,sed\n'),
-        ('THEFUCK_OVERRIDDEN_ALIASES', '\ncut,\n\ngit,\tsed\r')])
+        ('FUCK_OVERRIDDEN_ALIASES', 'cut,git,sed'),
+        ('FUCK_OVERRIDDEN_ALIASES', 'cut, git, sed'),
+        ('FUCK_OVERRIDDEN_ALIASES', ' cut,\tgit,sed\n'),
+        ('FUCK_OVERRIDDEN_ALIASES', '\ncut,\n\ngit,\tsed\r')])
     def test_get_overridden_aliases(self, shell, os_environ, key, value):
         os_environ[key] = value
         overridden = shell._get_overridden_aliases()
@@ -79,10 +78,11 @@ class TestFish(object):
     def test_app_alias(self, shell):
         assert 'function fuck' in shell.app_alias('fuck')
         assert 'function FUCK' in shell.app_alias('FUCK')
-        assert 'thefuck' in shell.app_alias('fuck')
-        assert 'TF_SHELL=fish' in shell.app_alias('fuck')
-        assert 'TF_ALIAS=fuck PYTHONIOENCODING' in shell.app_alias('fuck')
+        assert 'fuck' in shell.app_alias('fuck')
+        assert 'FUCK_SHELL=fish' in shell.app_alias('fuck')
+        assert 'FUCK_ALIAS=fuck PYTHONIOENCODING' in shell.app_alias('fuck')
         assert 'PYTHONIOENCODING=utf-8' in shell.app_alias('fuck')
+        assert 'command fuck' in shell.app_alias('fuck')
         assert ARGUMENT_PLACEHOLDER in shell.app_alias('fuck')
 
     def test_app_alias_alter_history(self, settings, shell):
@@ -105,7 +105,7 @@ class TestFish(object):
         ('ls', '- cmd: ls\n   when: 1430707243\n'),
         (u'echo café', '- cmd: echo café\n   when: 1430707243\n')])
     def test_put_to_history(self, entry, entry_utf8, builtins_open, mocker, shell):
-        mocker.patch('thefuck.shells.fish.time', return_value=1430707243.3517463)
+        mocker.patch('fuck.shells.fish.time', return_value=1430707243.3517463)
         shell.put_to_history(entry)
         builtins_open.return_value.__enter__.return_value. \
             write.assert_called_once_with(entry_utf8)
@@ -117,7 +117,7 @@ class TestFish(object):
     def test_how_to_configure_when_config_not_found(self, shell,
                                                     config_exists):
         config_exists.return_value = False
-        assert not shell.how_to_configure().can_configure_automatically
+        assert shell.how_to_configure().can_configure_automatically
 
     def test_get_version(self, shell, Popen):
         Popen.return_value.stdout.read.side_effect = [b'fish, version 3.5.9\n']

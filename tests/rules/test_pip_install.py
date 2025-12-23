@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-from thefuck.rules.pip_install import match, get_new_command
-from thefuck.types import Command
+from fuck.rules.pip_install import match, get_new_command
+from fuck.types import Command
 
 
 def test_match():

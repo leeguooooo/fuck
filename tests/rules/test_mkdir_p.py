@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.mkdir_p import match, get_new_command
-from thefuck.types import Command
+from fuck.rules.mkdir_p import match, get_new_command
+from fuck.types import Command
 
 
 @pytest.mark.parametrize('command', [

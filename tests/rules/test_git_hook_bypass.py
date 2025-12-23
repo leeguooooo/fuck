@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.git_hook_bypass import match, get_new_command
-from thefuck.types import Command
+from fuck.rules.git_hook_bypass import match, get_new_command
+from fuck.types import Command
 
 
 @pytest.mark.parametrize(

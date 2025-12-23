@@ -1,7 +1,7 @@
 def _set_confirmation(proc, require):
-    proc.sendline(u'mkdir -p ~/.thefuck')
+    proc.sendline(u'mkdir -p ~/.fuck')
     proc.sendline(
-        u'echo "require_confirmation = {}" > ~/.thefuck/settings.py'.format(
+        u'echo "require_confirmation = {}" > ~/.fuck/settings.py'.format(
             require))
 
 

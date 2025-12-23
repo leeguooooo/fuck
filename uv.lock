@@ -442,6 +442,74 @@ wheels = [
 ]
 
 [[package]]
+name = "fuck"
+version = "3.44"
+source = { editable = "." }
+dependencies = [
+    { name = "backports-shutil-get-terminal-size", marker = "python_full_version < '3.3'" },
+    { name = "colorama" },
+    { name = "decorator", version = "4.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.5'" },
+    { name = "decorator", version = "5.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.5' and python_full_version < '3.8'" },
+    { name = "decorator", version = "5.2.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.8'" },
+    { name = "pathlib2", marker = "python_full_version < '3.4'" },
+    { name = "psutil", version = "6.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.6'" },
+    { name = "psutil", version = "7.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.6'" },
+    { name = "pyte", version = "0.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '2.8'" },
+    { name = "pyte", version = "0.8.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '2.8' and python_full_version < '3.8'" },
+    { name = "pyte", version = "0.8.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.8'" },
+    { name = "rich", marker = "python_full_version >= '3.8'" },
+    { name = "six" },
+    { name = "win-unicode-console", marker = "sys_platform == 'win32'" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "flake8", marker = "python_full_version >= '3.9'" },
+    { name = "mock", marker = "python_full_version >= '3.8'" },
+    { name = "pexpect", marker = "python_full_version >= '3.8'" },
+    { name = "pypandoc", marker = "python_full_version >= '3.8'" },
+    { name = "pytest", version = "8.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
+    { name = "pytest", version = "8.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
+    { name = "pytest-benchmark", version = "4.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
+    { name = "pytest-benchmark", version = "5.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
+    { name = "pytest-docker-pexpect", marker = "python_full_version >= '3.8'" },
+    { name = "pytest-mock", version = "3.14.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
+    { name = "pytest-mock", version = "3.15.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
+    { name = "setuptools", version = "75.3.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
+    { name = "setuptools", version = "80.9.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
+    { name = "twine", version = "6.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
+    { name = "twine", version = "6.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
+    { name = "wheel", marker = "python_full_version >= '3.8'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "backports-shutil-get-terminal-size", marker = "python_full_version < '3.3'" },
+    { name = "colorama" },
+    { name = "decorator", marker = "python_full_version < '2.8'", specifier = "<5" },
+    { name = "decorator", marker = "python_full_version >= '2.8'" },
+    { name = "flake8", marker = "python_full_version >= '3.9' and extra == 'dev'", specifier = ">=6" },
+    { name = "mock", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "pathlib2", marker = "python_full_version < '3.4'" },
+    { name = "pexpect", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "psutil" },
+    { name = "pypandoc", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "pyte", marker = "python_full_version < '2.8'", specifier = "<0.8.1" },
+    { name = "pyte", marker = "python_full_version >= '2.8'" },
+    { name = "pytest", marker = "python_full_version >= '3.8' and extra == 'dev'", specifier = "<9" },
+    { name = "pytest-benchmark", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "pytest-docker-pexpect", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "pytest-mock", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "rich", marker = "python_full_version >= '3.8'" },
+    { name = "setuptools", marker = "python_full_version >= '3.8' and extra == 'dev'", specifier = ">=17.1" },
+    { name = "six" },
+    { name = "twine", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "wheel", marker = "python_full_version >= '3.8' and extra == 'dev'" },
+    { name = "win-unicode-console", marker = "sys_platform == 'win32'" },
+]
+provides-extras = ["dev"]
+
+[[package]]
 name = "id"
 version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1305,74 +1373,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
 ]
-
-[[package]]
-name = "thefuck"
-version = "3.32"
-source = { editable = "." }
-dependencies = [
-    { name = "backports-shutil-get-terminal-size", marker = "python_full_version < '3.3'" },
-    { name = "colorama" },
-    { name = "decorator", version = "4.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.5'" },
-    { name = "decorator", version = "5.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.5' and python_full_version < '3.8'" },
-    { name = "decorator", version = "5.2.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.8'" },
-    { name = "pathlib2", marker = "python_full_version < '3.4'" },
-    { name = "psutil", version = "6.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.6'" },
-    { name = "psutil", version = "7.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.6'" },
-    { name = "pyte", version = "0.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '2.8'" },
-    { name = "pyte", version = "0.8.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '2.8' and python_full_version < '3.8'" },
-    { name = "pyte", version = "0.8.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.8'" },
-    { name = "rich", marker = "python_full_version >= '3.8'" },
-    { name = "six" },
-    { name = "win-unicode-console", marker = "sys_platform == 'win32'" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "flake8", marker = "python_full_version >= '3.9'" },
-    { name = "mock", marker = "python_full_version >= '3.8'" },
-    { name = "pexpect", marker = "python_full_version >= '3.8'" },
-    { name = "pypandoc", marker = "python_full_version >= '3.8'" },
-    { name = "pytest", version = "8.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
-    { name = "pytest", version = "8.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
-    { name = "pytest-benchmark", version = "4.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
-    { name = "pytest-benchmark", version = "5.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
-    { name = "pytest-docker-pexpect", marker = "python_full_version >= '3.8'" },
-    { name = "pytest-mock", version = "3.14.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
-    { name = "pytest-mock", version = "3.15.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
-    { name = "setuptools", version = "75.3.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
-    { name = "setuptools", version = "80.9.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
-    { name = "twine", version = "6.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.8.*'" },
-    { name = "twine", version = "6.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
-    { name = "wheel", marker = "python_full_version >= '3.8'" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "backports-shutil-get-terminal-size", marker = "python_full_version < '3.3'" },
-    { name = "colorama" },
-    { name = "decorator", marker = "python_full_version < '2.8'", specifier = "<5" },
-    { name = "decorator", marker = "python_full_version >= '2.8'" },
-    { name = "flake8", marker = "python_full_version >= '3.9' and extra == 'dev'", specifier = ">=6" },
-    { name = "mock", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "pathlib2", marker = "python_full_version < '3.4'" },
-    { name = "pexpect", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "psutil" },
-    { name = "pypandoc", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "pyte", marker = "python_full_version < '2.8'", specifier = "<0.8.1" },
-    { name = "pyte", marker = "python_full_version >= '2.8'" },
-    { name = "pytest", marker = "python_full_version >= '3.8' and extra == 'dev'", specifier = "<9" },
-    { name = "pytest-benchmark", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "pytest-docker-pexpect", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "pytest-mock", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "rich", marker = "python_full_version >= '3.8'" },
-    { name = "setuptools", marker = "python_full_version >= '3.8' and extra == 'dev'", specifier = ">=17.1" },
-    { name = "six" },
-    { name = "twine", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "wheel", marker = "python_full_version >= '3.8' and extra == 'dev'" },
-    { name = "win-unicode-console", marker = "sys_platform == 'win32'" },
-]
-provides-extras = ["dev"]
 
 [[package]]
 name = "tomli"

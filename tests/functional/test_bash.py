@@ -4,11 +4,11 @@ from tests.functional.plots import with_confirmation, without_confirmation, \
     select_command_with_arrows, how_to_configure
 
 
-python_3 = (u'thefuck/python3',
+python_3 = (u'fuck/python3',
             u'',
             u'sh')
 
-python_2 = (u'thefuck/python2',
+python_2 = (u'fuck/python2',
             u'',
             u'sh')
 
@@ -17,8 +17,8 @@ init_bashrc = u'''echo '
 export SHELL=/bin/bash
 export PS1="$ "
 echo > $HISTFILE
-eval $(thefuck --alias {})
-echo "instant mode ready: $THEFUCK_INSTANT_MODE"
+eval $(fuck --alias {})
+echo "instant mode ready: $FUCK_INSTANT_MODE"
 ' > ~/.bashrc'''
 
 

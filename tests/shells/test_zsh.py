@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from thefuck.shells.zsh import Zsh
+from fuck.shells.zsh import Zsh
 
 
 @pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
@@ -13,19 +13,19 @@ class TestZsh(object):
 
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.zsh.Popen')
+        mock = mocker.patch('fuck.shells.zsh.Popen')
         return mock
 
     @pytest.fixture(autouse=True)
     def shell_aliases(self):
-        os.environ['TF_SHELL_ALIASES'] = (
-            'fuck=\'eval $(thefuck $(fc -ln -1 | tail -n 1))\'\n'
+        os.environ['FUCK_SHELL_ALIASES'] = (
+            'fuck=\'eval $(command fuck $(fc -ln -1 | tail -n 1))\'\n'
             'l=\'ls -CF\'\n'
             'la=\'ls -A\'\n'
             'll=\'ls -alF\'')
 
     @pytest.mark.parametrize('before, after', [
-        ('fuck', 'eval $(thefuck $(fc -ln -1 | tail -n 1))'),
+        ('fuck', 'eval $(command fuck $(fc -ln -1 | tail -n 1))'),
         ('pwd', 'pwd'),
         ('ll', 'ls -alF')])
     def test_from_shell(self, before, after, shell):
@@ -42,7 +42,7 @@ class TestZsh(object):
 
     def test_get_aliases(self, shell):
         assert shell.get_aliases() == {
-            'fuck': 'eval $(thefuck $(fc -ln -1 | tail -n 1))',
+            'fuck': 'eval $(command fuck $(fc -ln -1 | tail -n 1))',
             'l': 'ls -CF',
             'la': 'ls -A',
             'll': 'ls -alF'}
@@ -50,16 +50,17 @@ class TestZsh(object):
     def test_app_alias(self, shell):
         assert 'fuck () {' in shell.app_alias('fuck')
         assert 'FUCK () {' in shell.app_alias('FUCK')
-        assert 'thefuck' in shell.app_alias('fuck')
+        assert 'fuck' in shell.app_alias('fuck')
         assert 'PYTHONIOENCODING' in shell.app_alias('fuck')
 
     def test_app_alias_variables_correctly_set(self, shell):
         alias = shell.app_alias('fuck')
         assert "fuck () {" in alias
-        assert 'TF_SHELL=zsh' in alias
-        assert "TF_ALIAS=fuck" in alias
+        assert 'FUCK_SHELL=zsh' in alias
+        assert "FUCK_ALIAS=fuck" in alias
         assert 'PYTHONIOENCODING=utf-8' in alias
-        assert 'TF_SHELL_ALIASES=$(alias)' in alias
+        assert 'FUCK_SHELL_ALIASES=$(alias)' in alias
+        assert 'command fuck' in alias
 
     def test_get_history(self, history_lines, shell):
         history_lines([': 1432613911:0;ls', ': 1432613916:0;rm'])
@@ -72,7 +73,7 @@ class TestZsh(object):
     def test_how_to_configure_when_config_not_found(self, shell,
                                                     config_exists):
         config_exists.return_value = False
-        assert not shell.how_to_configure().can_configure_automatically
+        assert shell.how_to_configure().can_configure_automatically
 
     def test_info(self, shell, Popen):
         Popen.return_value.stdout.read.side_effect = [b'3.5.9']

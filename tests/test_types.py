@@ -5,10 +5,10 @@ from subprocess import PIPE, STDOUT
 from mock import Mock
 import pytest
 from tests.utils import CorrectedCommand, Rule
-from thefuck import const
-from thefuck.exceptions import EmptyCommand
-from thefuck.system import Path
-from thefuck.types import Command
+from fuck import const
+from fuck.exceptions import EmptyCommand
+from fuck.system import Path
+from fuck.types import Command
 
 
 class TestCorrectedCommand(object):
@@ -46,7 +46,7 @@ class TestCorrectedCommand(object):
 
 class TestRule(object):
     def test_from_path_rule_exception(self, mocker):
-        load_source = mocker.patch('thefuck.types.load_source',
+        load_source = mocker.patch('fuck.types.load_source',
                                    side_effect=ImportError("No module named foo..."))
         assert Rule.from_path(Path('git.py')) is None
         load_source.assert_called_once_with('git', 'git.py')
@@ -55,7 +55,7 @@ class TestRule(object):
         match = object()
         get_new_command = object()
         load_source = mocker.patch(
-            'thefuck.types.load_source',
+            'fuck.types.load_source',
             return_value=Mock(match=match,
                               get_new_command=get_new_command,
                               enabled_by_default=True,
@@ -67,7 +67,7 @@ class TestRule(object):
         load_source.assert_called_once_with('bash', rule_path)
 
     def test_from_path_excluded_rule(self, mocker, settings):
-        load_source = mocker.patch('thefuck.types.load_source')
+        load_source = mocker.patch('fuck.types.load_source')
         settings.update(exclude_rules=['git'])
         rule_path = os.path.join(os.sep, 'rules', 'git.py')
         assert Rule.from_path(Path(rule_path)) is None
@@ -118,12 +118,12 @@ class TestCommand(object):
     def Popen(self, monkeypatch):
         Popen = Mock()
         Popen.return_value.stdout.read.return_value = b'output'
-        monkeypatch.setattr('thefuck.output_readers.rerun.Popen', Popen)
+        monkeypatch.setattr('fuck.output_readers.rerun.Popen', Popen)
         return Popen
 
     @pytest.fixture(autouse=True)
     def prepare(self, monkeypatch):
-        monkeypatch.setattr('thefuck.output_readers.rerun._wait_output',
+        monkeypatch.setattr('fuck.output_readers.rerun._wait_output',
                             lambda *_: True)
 
     def test_from_script_calls(self, Popen, settings, os_environ):

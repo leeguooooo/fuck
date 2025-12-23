@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0", "wheel", "fastentrypoints"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "thefuck-leeguoo"
+name = "fuck"
 version = "3.44"
 description = "AI-first command fixer for shell/terminal CLI with streamed explanations and Markdown rendering"
 readme = "README.md"
 requires-python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-license = {text = "MIT"}
+license = "MIT"
 authors = [{name = "leeguoo"}]
 keywords = [
   "ai",
@@ -37,14 +37,13 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/leeguooooo/thefuck"
-Repository = "https://github.com/leeguooooo/thefuck"
-Issues = "https://github.com/leeguooooo/thefuck/issues"
-Documentation = "https://github.com/leeguooooo/thefuck#readme"
+Homepage = "https://github.com/leeguooooo/fuck"
+Repository = "https://github.com/leeguooooo/fuck"
+Issues = "https://github.com/leeguooooo/fuck/issues"
+Documentation = "https://github.com/leeguooooo/fuck#readme"
 
 [project.scripts]
-thefuck = "thefuck.entrypoints.main:main"
-fuck = "thefuck.entrypoints.not_configured:main"
+fuck = "fuck.entrypoints.main:main"
 
 [project.optional-dependencies]
 dev = [

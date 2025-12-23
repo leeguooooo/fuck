@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.composer_not_command import match, get_new_command
-from thefuck.types import Command
+from fuck.rules.composer_not_command import match, get_new_command
+from fuck.types import Command
 
 
 @pytest.fixture

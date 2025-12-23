@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.long_form_help import match, get_new_command
-from thefuck.types import Command
+from fuck.rules.long_form_help import match, get_new_command
+from fuck.types import Command
 
 
 @pytest.mark.parametrize('output', [

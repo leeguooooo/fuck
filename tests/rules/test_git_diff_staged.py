@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.git_diff_staged import match, get_new_command
-from thefuck.types import Command
+from fuck.rules.git_diff_staged import match, get_new_command
+from fuck.types import Command
 
 
 @pytest.mark.parametrize('command', [
