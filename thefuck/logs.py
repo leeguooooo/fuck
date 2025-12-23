@@ -159,6 +159,33 @@ def confirm_text(corrected_command):
     _last_confirm_lines = _calc_prompt_lines(prompt)
 
 
+def ai_choose_header():
+    sys.stderr.write(u'\n{label}Choose{reset}\n'.format(
+        label=color(colorama.Style.BRIGHT + colorama.Fore.GREEN),
+        reset=color(colorama.Style.RESET_ALL)))
+
+
+def confirm_choice(corrected_command):
+    global _last_confirm_lines
+    index = getattr(corrected_command, '_tf_index', None)
+    if not index:
+        return confirm_text(corrected_command)
+    prompt = (u'{prefix}{bold}{index}{reset} '
+              u'[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
+              u'/{blue}tab{reset}/{red}ctrl+c{reset}]').format(
+                  prefix=const.USER_COMMAND_MARK,
+                  index=index,
+                  bold=color(colorama.Style.BRIGHT),
+                  green=color(colorama.Fore.GREEN),
+                  red=color(colorama.Fore.RED),
+                  reset=color(colorama.Style.RESET_ALL),
+                  blue=color(colorama.Fore.BLUE))
+    sys.stderr.write(_clear_previous_confirm())
+    sys.stderr.write(prompt)
+    sys.stderr.flush()
+    _last_confirm_lines = _calc_prompt_lines(prompt)
+
+
 def debug(msg):
     if settings.debug:
         sys.stderr.write(u'{blue}{bold}DEBUG:{reset} {msg}\n'.format(

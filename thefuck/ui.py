@@ -56,6 +56,12 @@ class CommandSelector(object):
         """:rtype thefuck.types.CorrectedCommand"""
         return self._commands[self._index]
 
+    @property
+    def all_ai(self):
+        self._realise()
+        return all(getattr(cmd, '_tf_source', None) == 'ai'
+                   for cmd in self._commands)
+
 
 def select_command(corrected_commands):
     """Returns:
@@ -80,7 +86,12 @@ def select_command(corrected_commands):
         return selector.value
 
     logs.reset_confirm_text()
-    logs.confirm_text(selector.value)
+    ai_mode = selector.all_ai
+    if ai_mode:
+        logs.ai_choose_header()
+        logs.confirm_choice(selector.value)
+    else:
+        logs.confirm_text(selector.value)
 
     for action in read_actions():
         if action == const.ACTION_SELECT:
@@ -93,7 +104,13 @@ def select_command(corrected_commands):
             return
         elif action == const.ACTION_PREVIOUS:
             selector.previous()
-            logs.confirm_text(selector.value)
+            if ai_mode:
+                logs.confirm_choice(selector.value)
+            else:
+                logs.confirm_text(selector.value)
         elif action == const.ACTION_NEXT:
             selector.next()
-            logs.confirm_text(selector.value)
+            if ai_mode:
+                logs.confirm_choice(selector.value)
+            else:
+                logs.confirm_text(selector.value)

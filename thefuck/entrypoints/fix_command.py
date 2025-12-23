@@ -9,7 +9,7 @@ from ..corrector import get_corrected_commands
 from ..exceptions import EmptyCommand
 from ..ui import select_command
 from ..utils import format_raw_script, get_alias, get_all_executables
-from ..ai import (build_corrected_commands, emit_ai_result,
+from ..ai import (build_corrected_commands, emit_ai_commands, emit_ai_result,
                   fallback_corrected_commands, get_ai_suggestion, is_enabled)
 
 
@@ -43,7 +43,13 @@ def _get_ai_prompt(known_args):
 
 
 def _emit_ai_if_needed(ai_result):
-    if ai_result and ai_result.explanation and not ai_result.streamed:
+    if not ai_result:
+        return ai_result
+    if ai_result.streamed:
+        if ai_result.commands:
+            emit_ai_commands(ai_result)
+        return ai_result
+    if ai_result.explanation or ai_result.commands:
         emit_ai_result(ai_result)
         return ai_result._replace(streamed=True)
     return ai_result

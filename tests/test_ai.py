@@ -69,5 +69,4 @@ def test_get_ai_suggestion_think_answer(settings, monkeypatch):
 
     assert result.commands == ['ls -a', 'ls -la']
     assert 'This is **why** it failed.' in result.explanation
-    assert 'Commands' in result.explanation
     assert result.streamed is False

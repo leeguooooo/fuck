@@ -76,7 +76,7 @@ def emit_ai_result(result):
         from rich.markdown import Markdown
         from rich.text import Text
     except Exception:
-        _emit_ai_plain(think_text, commands, descriptions)
+        _emit_ai_plain(think_text, commands, descriptions, numbered=True)
         return
 
     console = Console(stderr=True, theme=_build_ai_theme())
@@ -84,9 +84,11 @@ def emit_ai_result(result):
     if think_text:
         console.print(Markdown(think_text), style='ai.text')
     if commands:
-        console.print('Commands:', style='ai.heading')
-        for cmd in commands:
+        console.print()
+        console.print('Commands', style='ai.heading')
+        for idx, cmd in enumerate(commands, 1):
             line = Text()
+            line.append('{}. '.format(idx), style='ai.punct')
             line.append(cmd, style='ai.command')
             desc = descriptions.get(cmd, '')
             if desc:
@@ -95,11 +97,40 @@ def emit_ai_result(result):
             console.print(line)
 
 
-def _emit_ai_plain(text, commands, descriptions):
+def emit_ai_commands(result):
+    if not result:
+        return
+    commands = result.commands or []
+    if not commands:
+        return
+    descriptions = result.descriptions or {}
+    try:
+        from rich.console import Console
+        from rich.text import Text
+    except Exception:
+        _emit_ai_plain('', commands, descriptions, numbered=True)
+        return
+
+    console = Console(stderr=True, theme=_build_ai_theme())
+    console.print()
+    console.print('Commands', style='ai.heading')
+    for idx, cmd in enumerate(commands, 1):
+        line = Text()
+        line.append('{}. '.format(idx), style='ai.punct')
+        line.append(cmd, style='ai.command')
+        desc = descriptions.get(cmd, '')
+        if desc:
+            line.append(' — ', style='ai.punct')
+            line.append(desc, style='ai.desc')
+        console.print(line)
+
+
+def _emit_ai_plain(text, commands, descriptions, numbered=False):
     label = logs.color(colorama.Style.BRIGHT + colorama.Fore.GREEN)
     body = logs.color(colorama.Fore.WHITE)
     cmd_color = logs.color(colorama.Style.BRIGHT + colorama.Fore.CYAN)
     desc_color = logs.color(colorama.Fore.YELLOW)
+    punct = logs.color(colorama.Fore.YELLOW)
     reset = logs.color(colorama.Style.RESET_ALL)
 
     if text or commands:
@@ -109,11 +140,13 @@ def _emit_ai_plain(text, commands, descriptions):
         sys.stderr.write(u'{body}{text}{reset}\n'.format(
             body=body, text=text, reset=reset))
     if commands:
-        sys.stderr.write(u'{body}Commands:{reset}\n'.format(
+        sys.stderr.write(u'\n{body}Commands{reset}\n'.format(
             body=body, reset=reset))
-        for cmd in commands:
-            line = u'{cmd_color}{cmd}{reset}'.format(
-                cmd_color=cmd_color, cmd=cmd, reset=reset)
+        for idx, cmd in enumerate(commands, 1):
+            prefix = u'{}. '.format(idx) if numbered else u''
+            line = u'{punct}{prefix}{reset}{cmd_color}{cmd}{reset}'.format(
+                punct=punct, prefix=prefix, reset=reset,
+                cmd_color=cmd_color, cmd=cmd)
             desc = descriptions.get(cmd, '')
             if desc:
                 line += u' — {desc_color}{desc}{reset}'.format(
@@ -149,6 +182,7 @@ def build_corrected_commands(result):
         side_effect = _side_effect if result.explanation else None
     descriptions = result.descriptions or {}
     corrected = []
+    total = len(result.commands)
     for idx, cmd in enumerate(result.commands):
         corrected_command = CorrectedCommand(
             script=cmd,
@@ -157,6 +191,9 @@ def build_corrected_commands(result):
         desc = descriptions.get(cmd)
         if desc:
             corrected_command.desc = desc
+        corrected_command._tf_source = 'ai'
+        corrected_command._tf_index = idx + 1
+        corrected_command._tf_total = total
         corrected.append(corrected_command)
     return corrected
 
@@ -316,7 +353,6 @@ class _StreamWriter(object):
         self._live = None
         self._markdown_cls = None
         self._use_rich = False
-        self._transient = False
         self._init_rich()
 
     def _init_rich(self):
@@ -327,10 +363,9 @@ class _StreamWriter(object):
         except Exception:
             return
         self._use_rich = True
-        self._transient = True
         self._console = Console(stderr=True, theme=_build_ai_theme())
         self._live = Live(Markdown(''), console=self._console,
-                          refresh_per_second=8, transient=True)
+                          refresh_per_second=8)
         self._markdown_cls = Markdown
 
     def feed(self, chunk):
@@ -385,7 +420,7 @@ class _StreamWriter(object):
         if self._started:
             return
         self._started = True
-        self.streamed = not self._transient
+        self.streamed = True
         if self._use_rich:
             self._console.print('AI:', style='ai.label')
             self._live.start()
@@ -604,6 +639,7 @@ def _build_from_answer(answer_obj, think_text, streamed):
     descriptions_map = {
         cmd: desc for cmd, desc, _ in descriptions if desc
     }
+    explanation = think_text.strip()
     return AiResult(commands=commands, explanation=explanation, streamed=streamed,
                     descriptions=descriptions_map)
 
