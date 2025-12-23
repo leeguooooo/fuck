@@ -79,14 +79,17 @@ def select_command(corrected_commands):
         logs.show_corrected_command(selector.value)
         return selector.value
 
+    logs.reset_confirm_text()
     logs.confirm_text(selector.value)
 
     for action in read_actions():
         if action == const.ACTION_SELECT:
             sys.stderr.write('\n')
+            logs.reset_confirm_text()
             return selector.value
         elif action == const.ACTION_ABORT:
             logs.failed('\nAborted')
+            logs.reset_confirm_text()
             return
         elif action == const.ACTION_PREVIOUS:
             selector.previous()

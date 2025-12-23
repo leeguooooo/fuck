@@ -9,7 +9,7 @@ from ..corrector import get_corrected_commands
 from ..exceptions import EmptyCommand
 from ..ui import select_command
 from ..utils import format_raw_script, get_alias, get_all_executables
-from ..ai import (build_corrected_commands, emit_markdown,
+from ..ai import (build_corrected_commands, emit_ai_result,
                   fallback_corrected_commands, get_ai_suggestion, is_enabled)
 
 
@@ -63,13 +63,13 @@ def fix_command(known_args):
                     command, prompt=ai_prompt, warn_on_error=True)
                 if ai_result:
                     if ai_result.explanation and not ai_result.streamed:
-                        emit_markdown(ai_result.explanation)
+                        emit_ai_result(ai_result)
                         ai_result = ai_result._replace(streamed=True)
                     if ai_result.commands:
                         corrected_commands = iter(
                             build_corrected_commands(ai_result))
                     elif ai_result.explanation and not ai_result.streamed:
-                        emit_markdown(ai_result.explanation)
+                        emit_ai_result(ai_result)
                         sys.exit(1)
                     else:
                         sys.exit(1)
@@ -81,12 +81,12 @@ def fix_command(known_args):
                         corrected_commands = chain(ai_commands,
                                                    corrected_commands)
                     elif ai_result.explanation:
-                        emit_markdown(ai_result.explanation)
+                        emit_ai_result(ai_result)
             else:
                 corrected_commands, ai_result = fallback_corrected_commands(
                     command, corrected_commands)
                 if ai_result and not ai_result.commands and ai_result.explanation:
-                    emit_markdown(ai_result.explanation)
+                    emit_ai_result(ai_result)
                     sys.exit(1)
         selected_command = select_command(corrected_commands)
 

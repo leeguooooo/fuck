@@ -3,6 +3,7 @@ import re
 import sys
 from collections import namedtuple
 from itertools import chain
+import colorama
 import six
 from six.moves.urllib import request
 from six.moves.urllib.error import HTTPError, URLError
@@ -46,6 +47,80 @@ def is_enabled():
     return bool(settings.ai_enabled and settings.ai_url)
 
 
+def _build_ai_theme():
+    from rich.theme import Theme
+    return Theme({
+        'ai.label': 'bold green',
+        'ai.text': 'white',
+        'ai.heading': 'bold green',
+        'ai.command': 'bold cyan',
+        'ai.desc': 'yellow',
+        'ai.punct': 'yellow',
+        'markdown': 'white',
+    })
+
+
+def emit_ai_result(result):
+    if not result:
+        return
+
+    explanation = result.explanation or ''
+    commands = result.commands or []
+    descriptions = result.descriptions or {}
+    if not explanation and not commands:
+        return
+
+    think_text = _strip_commands_section(explanation)
+    try:
+        from rich.console import Console
+        from rich.markdown import Markdown
+        from rich.text import Text
+    except Exception:
+        _emit_ai_plain(think_text, commands, descriptions)
+        return
+
+    console = Console(stderr=True, theme=_build_ai_theme())
+    console.print('AI:', style='ai.label')
+    if think_text:
+        console.print(Markdown(think_text), style='ai.text')
+    if commands:
+        console.print('Commands:', style='ai.heading')
+        for cmd in commands:
+            line = Text()
+            line.append(cmd, style='ai.command')
+            desc = descriptions.get(cmd, '')
+            if desc:
+                line.append(' — ', style='ai.punct')
+                line.append(desc, style='ai.desc')
+            console.print(line)
+
+
+def _emit_ai_plain(text, commands, descriptions):
+    label = logs.color(colorama.Style.BRIGHT + colorama.Fore.GREEN)
+    body = logs.color(colorama.Fore.WHITE)
+    cmd_color = logs.color(colorama.Style.BRIGHT + colorama.Fore.CYAN)
+    desc_color = logs.color(colorama.Fore.YELLOW)
+    reset = logs.color(colorama.Style.RESET_ALL)
+
+    if text or commands:
+        sys.stderr.write(u'{label}AI:{reset}\n'.format(
+            label=label, reset=reset))
+    if text:
+        sys.stderr.write(u'{body}{text}{reset}\n'.format(
+            body=body, text=text, reset=reset))
+    if commands:
+        sys.stderr.write(u'{body}Commands:{reset}\n'.format(
+            body=body, reset=reset))
+        for cmd in commands:
+            line = u'{cmd_color}{cmd}{reset}'.format(
+                cmd_color=cmd_color, cmd=cmd, reset=reset)
+            desc = descriptions.get(cmd, '')
+            if desc:
+                line += u' — {desc_color}{desc}{reset}'.format(
+                    desc_color=desc_color, desc=desc, reset=reset)
+            sys.stderr.write(line + '\n')
+
+
 def emit_markdown(explanation):
     if not explanation:
         return
@@ -66,7 +141,7 @@ def build_corrected_commands(result):
         return []
 
     def _side_effect(old_cmd, new_cmd):
-        emit_markdown(result.explanation)
+        emit_ai_result(result)
 
     if result.streamed:
         side_effect = None
@@ -251,7 +326,7 @@ class _StreamWriter(object):
         except Exception:
             return
         self._use_rich = True
-        self._console = Console(stderr=True)
+        self._console = Console(stderr=True, theme=_build_ai_theme())
         self._live = Live(Markdown(''), console=self._console,
                           refresh_per_second=8)
         self._markdown_cls = Markdown
@@ -310,10 +385,12 @@ class _StreamWriter(object):
         self._started = True
         self.streamed = True
         if self._use_rich:
-            self._console.print('AI:')
+            self._console.print('AI:', style='ai.label')
             self._live.start()
         else:
-            sys.stderr.write('AI: ')
+            sys.stderr.write('{}AI:{} '.format(
+                logs.color(colorama.Style.BRIGHT + colorama.Fore.GREEN),
+                logs.color(colorama.Style.RESET_ALL)))
             sys.stderr.flush()
 
     def _strip_think_prefix(self, text):
