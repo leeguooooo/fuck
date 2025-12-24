@@ -123,7 +123,7 @@ class Generic(object):
         return u'source {}'.format(self._env_path(fish))
 
     def alias_refresh_command(self):
-        return u'eval "$(command fuck --alias)"'
+        return u'eval $(command fuck --alias)'
 
     def _script_from_history(self, line):
         return line
