@@ -56,6 +56,10 @@ class Fish(Generic):
             alter_history = ''
         # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
+                '  if test (count $argv) -gt 0; and contains -- $argv[1] setup --setup ai-setup --alias -h --help -v --version\n'
+                '    command fuck $argv\n'
+                '    return $status\n'
+                '  end\n'
                 '  set -l fucked_up_command $history[1]\n'
                 '  set -l fuck_prompt (string join " " -- $argv)\n'
                 '  env FUCK_SHELL=fish FUCK_ALIAS={0} PYTHONIOENCODING=utf-8'

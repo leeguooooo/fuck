@@ -16,6 +16,12 @@ class Bash(Generic):
         return '''
             function {name} () {{
                 FUCK_PYTHONIOENCODING=$PYTHONIOENCODING;
+                if [ "$1" = "setup" ] || [ "$1" = "--setup" ] || [ "$1" = "ai-setup" ] \
+                    || [ "$1" = "--alias" ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] \
+                    || [ "$1" = "-v" ] || [ "$1" = "--version" ]; then
+                    command fuck "$@";
+                    return $?;
+                fi
                 export FUCK_SHELL=bash;
                 export FUCK_ALIAS={name};
                 export FUCK_SHELL_ALIASES=$(alias);
