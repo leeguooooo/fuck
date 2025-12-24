@@ -70,6 +70,9 @@ def main():
             return
         setup()
     elif _is_doctor_command(known_args):
+        if _called_via_alias():
+            _refresh_alias_and_retry(sys.argv[1:])
+            return
         doctor()
     elif known_args.command or 'FUCK_HISTORY' in os.environ:
         fix_command(known_args)
