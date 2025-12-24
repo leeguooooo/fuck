@@ -34,6 +34,10 @@ class Parser(object):
             action='store_true',
             help='interactive setup for AI environment variables')
         self._parser.add_argument(
+            '--doctor',
+            action='store_true',
+            help='diagnose configuration and common issues')
+        self._parser.add_argument(
             '--enable-experimental-instant-mode',
             action='store_true',
             help='enable experimental instant mode, use on your own risk')

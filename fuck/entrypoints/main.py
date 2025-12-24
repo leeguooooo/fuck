@@ -11,6 +11,7 @@ from ..utils import get_installation_version, should_refresh_alias  # noqa: E402
 from .. import const  # noqa: E402
 from ..shells import shell  # noqa: E402
 from .alias import print_alias  # noqa: E402
+from .doctor import doctor  # noqa: E402
 from .fix_command import fix_command  # noqa: E402
 from .not_configured import main as not_configured_main  # noqa: E402
 from .setup import setup  # noqa: E402
@@ -27,6 +28,12 @@ def _called_via_alias():
     return bool(os.environ.get('FUCK_PROMPT') or
                 os.environ.get('FUCK_COMMAND') or
                 os.environ.get('FUCK_HISTORY'))
+
+
+def _is_doctor_command(known_args):
+    if getattr(known_args, 'doctor', False):
+        return True
+    return bool(known_args.command and known_args.command[0] == 'doctor')
 
 
 def _refresh_alias_and_retry(argv):
@@ -62,6 +69,8 @@ def main():
             _refresh_alias_and_retry(sys.argv[1:])
             return
         setup()
+    elif _is_doctor_command(known_args):
+        doctor()
     elif known_args.command or 'FUCK_HISTORY' in os.environ:
         fix_command(known_args)
     elif known_args.shell_logger:
