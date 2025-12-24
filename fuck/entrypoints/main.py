@@ -59,11 +59,7 @@ def main():
         print_alias(known_args)
     elif _is_setup_command(known_args):
         if _called_via_alias():
-            if known_args.setup:
-                print('command fuck --setup')
-            else:
-                setup_cmd = ' '.join(known_args.command)
-                print('command fuck {}'.format(setup_cmd))
+            _refresh_alias_and_retry(sys.argv[1:])
             return
         setup()
     elif known_args.command or 'FUCK_HISTORY' in os.environ:
