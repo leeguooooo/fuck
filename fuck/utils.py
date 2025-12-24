@@ -295,6 +295,14 @@ cache.disabled = False
 
 
 def get_installation_version():
+    def _from_module():
+        try:
+            from . import __version__
+        except Exception:
+            return
+        if __version__:
+            return __version__
+
     def _from_importlib():
         try:
             from importlib.metadata import (  # py3.8+
@@ -327,14 +335,14 @@ def get_installation_version():
     try:
         import pkg_resources
     except Exception:
-        return 'unknown'
+        return _from_module() or 'unknown'
 
     for name in ('fuck', 'fuck-cli'):
         try:
             return pkg_resources.require(name)[0].version
         except Exception:
             continue
-    return 'unknown'
+    return _from_module() or 'unknown'
 
 
 def get_alias():
